@@ -11,16 +11,12 @@ const initialState = {
   users: [],
   error: false,
   loading: true,
-  selectUser: [],
 };
 
 const Slice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    selectedUser: (state, action) => {
-      state.selectUser = action.payload;
-    },
     deleteUser: (state, action) => {
       let isIn = state.users.data.some((el) => el.id === action.payload.id);
       if (isIn) {
@@ -65,5 +61,5 @@ const Slice = createSlice({
   },
 });
 
-export const { selectedUser, deleteUser, editUsers, addUsers } = Slice.actions;
+export const {deleteUser, editUsers, addUsers } = Slice.actions;
 export default Slice.reducer;

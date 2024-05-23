@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectedUser, fetchData, deleteUser } from "../Redux/CreateSlice";
+import {fetchData, deleteUser } from "../Redux/CreateSlice";
 import Image from "next/image";
 import { MdDelete, MdEdit } from "react-icons/md";
 import Link from "next/link";
@@ -14,6 +14,7 @@ function FetchData() {
   useEffect(() => {
     dispatch(fetchData());
   }, []);
+  // func delete
   const deleteUsers = async (user) => {
     const response = await axios.delete(
       `https://reqres.in/api/users/${user.id}`
@@ -21,11 +22,13 @@ function FetchData() {
     console.log(response);
     dispatch(deleteUser(user));
   };
+
+ // func reload
   const handleReload = () => {
     window.location.reload();
   };
-
-  if (error) {
+// error in fetch
+  if (error || !users) {
     return (
       <>
         <h4>کاربری یافت نشد !!</h4>
@@ -36,12 +39,14 @@ function FetchData() {
       </>
     );
   }
+  // loading in fetch
   if (loading) {
     <LoadingPage />;
   }
 
   return (
     <div className="">
+      {/* table user information */}
       <table class="table table-responsive table-hover">
         <tbody className="border">
           {users.data?.map((item,index) => (
@@ -70,9 +75,6 @@ function FetchData() {
                 <div className="d-flex flex-column align-items-center">
                   <Link
                     href={`${item.id}`}
-                    onClick={() => {
-                      dispatch(selectedUser(item));
-                    }}
                     className="btn btn-success mb-2 w-50"
                   >
                     <MdEdit size={18} />
@@ -92,6 +94,7 @@ function FetchData() {
           ))}
         </tbody>
       </table>
+
       {/* Reload.............. */}
       <button
         type="button"
