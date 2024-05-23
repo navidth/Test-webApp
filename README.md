@@ -2,6 +2,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 NextJs version 14.2.3 is used in this web application test
+....................................................................
+ You must install the required packages with the following command
+
+ ```bash
+npm install 
+```
 
 First, run the development server:
 
@@ -14,11 +20,7 @@ pnpm dev
 # or
 bun dev
 ```
- You must install the required packages with the following command
 
- ```bash
-npm install 
-```
 ## Learn More
 
 Libraries used:
