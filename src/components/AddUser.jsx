@@ -1,8 +1,7 @@
 "use client";
 import {useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
-import { addUsers, editUsers } from "./Redux/CreateSlice";
+import { addUsers} from "./Redux/CreateSlice";
 
 function AddUser() {
       const [firstName, setFirstName] = useState("");
@@ -62,8 +61,7 @@ function AddUser() {
             </div>
             <div
               className="btn mt-5 mb-3 btn-success"
-              onClick={addUser}
-            >
+              onClick={addUser}>
               create
             </div>
           </div>

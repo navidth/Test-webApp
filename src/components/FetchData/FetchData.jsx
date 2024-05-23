@@ -1,19 +1,24 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {fetchData, deleteUser } from "../Redux/CreateSlice";
+import { fetchData, deleteUser, selectUser } from "../Redux/CreateSlice";
 import Image from "next/image";
 import { MdDelete, MdEdit } from "react-icons/md";
 import Link from "next/link";
 import LoadingPage from "../Loading";
 import axios from "axios";
+import Pagintions from "../Pagintions";
 
-function FetchData() {
+function FetchData({page}) {
+  const [currentPage, setCurrentPage] = useState(page);
+  console.log(typeof currentPage)
+  console.log(currentPage)
+
   const dispatch = useDispatch();
   const { users, error, loading } = useSelector((state) => state.user);
   useEffect(() => {
-    dispatch(fetchData());
-  }, []);
+    dispatch(fetchData(page));
+  }, [page]);
   // func delete
   const deleteUsers = async (user) => {
     const response = await axios.delete(
@@ -23,20 +28,20 @@ function FetchData() {
     dispatch(deleteUser(user));
   };
 
- // func reload
+  // func reload
   const handleReload = () => {
     window.location.reload();
   };
-// error in fetch
+  // error in fetch
   if (error || !users) {
     return (
-      <>
+      <div className="d-block w-50 mx-auto bg-light border">
         <h4>کاربری یافت نشد !!</h4>
         <button type="button" className="btn btn-text-bg-danger">
           {" "}
           صفحه را دوباره بارگزاری کنید
         </button>
-      </>
+      </div>
     );
   }
   // loading in fetch
@@ -46,10 +51,19 @@ function FetchData() {
 
   return (
     <div className="">
+      {/* Reload.............. */}
+      <button
+        type="button"
+        onClick={handleReload}
+        className="btn btn-primary mb-3"
+      >
+        {" "}
+        Reload
+      </button>
       {/* table user information */}
       <table class="table table-responsive table-hover">
         <tbody className="border">
-          {users.data?.map((item,index) => (
+          {users.data?.map((item, index) => (
             <tr key={item.id}>
               <th scope="row">{index + 1}</th>
               <td className="border-end">
@@ -76,6 +90,7 @@ function FetchData() {
                   <Link
                     href={`${item.id}`}
                     className="btn btn-success mb-2 w-50"
+                    onClick={()=>{dispatch(selectUser(item))}}
                   >
                     <MdEdit size={18} />
                   </Link>
@@ -94,16 +109,8 @@ function FetchData() {
           ))}
         </tbody>
       </table>
-
-      {/* Reload.............. */}
-      <button
-        type="button"
-        onClick={handleReload}
-        className="btn btn-primary mb-3"
-      >
-        {" "}
-        Reload
-      </button>
+      {/* pagintions */}
+      <Pagintions currentPage={currentPage} setCurrentPage={setCurrentPage} />
     </div>
   );
 }
